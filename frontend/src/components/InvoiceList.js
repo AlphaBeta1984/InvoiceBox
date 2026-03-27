@@ -1,6 +1,6 @@
 import React from 'react';
 
-function InvoiceList({ invoices }) {
+function InvoiceList({ invoices, onDelete }) {
   if (!invoices.length) return <p>No invoices yet.</p>;
 
   return (
@@ -13,6 +13,7 @@ function InvoiceList({ invoices }) {
           <th style={th}>Due Date</th>
           <th style={th}>Status</th>
           <th style={th}>Total</th>
+          {onDelete && <th style={th}>Actions</th>}
         </tr>
       </thead>
       <tbody>
@@ -24,6 +25,16 @@ function InvoiceList({ invoices }) {
             <td style={td}>{inv.dueDate}</td>
             <td style={td}>{inv.status}</td>
             <td style={td}>${inv.total}</td>
+            {onDelete && (
+              <td style={td}>
+                <button
+                  onClick={() => onDelete(inv.id)}
+                  style={{ color: 'red', cursor: 'pointer' }}
+                >
+                  Delete
+                </button>
+              </td>
+            )}
           </tr>
         ))}
       </tbody>
