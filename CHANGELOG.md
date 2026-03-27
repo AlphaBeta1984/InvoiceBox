@@ -2,6 +2,33 @@
 
 All notable changes to this project will be documented in this file.
 
+## [1.2.0] - 2026-03-27
+
+### Added
+
+- PostgreSQL integration for persistent data storage
+- Database configuration via `DATABASE_URL` environment variable
+- SQL schema file (`backend/src/config/schema.sql`) for clients and invoices tables
+- Database setup script (`npm run db:setup --workspace=backend`)
+- `asyncHandler` middleware for clean async error handling in Express 4
+- Separate test database support via `TEST_DATABASE_URL`
+- Parameterized SQL queries for SQL injection prevention
+- Graceful handling of invalid UUID format (returns 404 instead of 500)
+
+### Changed
+
+- All models now use PostgreSQL via `node-pg` pool (was in-memory arrays)
+- All controllers converted to async/await
+- All route handlers wrapped with `asyncHandler`
+- Error handler hides internal error messages in production
+- Tests now use a real PostgreSQL test database with proper setup/teardown
+- Invoice test creates a client first, matching realistic usage
+- Backend version bumped to 1.2.0
+
+### Dependencies
+
+- Added `pg` ^8.13.1
+
 ## [1.1.0] - 2026-03-27
 
 ### Security
@@ -30,12 +57,6 @@ All notable changes to this project will be documented in this file.
 - Enhanced invoice route validation rules to cover item sub-fields
 - Updated test suite to reset both Invoice and Client stores in `beforeEach`
 - InvoiceList and ClientList components now accept optional `onDelete` prop
-
-### Known Limitations
-
-- Data is stored in-memory only (lost on server restart)
-- No authentication / authorization layer
-- Frontend displays raw client IDs instead of client names in invoice list
 
 ## [1.0.0] - 2025-12-27
 
