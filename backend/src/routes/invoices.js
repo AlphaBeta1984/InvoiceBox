@@ -11,6 +11,9 @@ const invoiceRules = [
   body('issueDate').isISO8601().withMessage('issueDate must be a valid date'),
   body('dueDate').isISO8601().withMessage('dueDate must be a valid date'),
   body('items').isArray({ min: 1 }).withMessage('items must be a non-empty array'),
+  body('items.*.description').notEmpty().withMessage('each item must have a description'),
+  body('items.*.quantity').isFloat({ gt: 0 }).withMessage('each item quantity must be > 0'),
+  body('items.*.unitPrice').isFloat({ min: 0 }).withMessage('each item unitPrice must be >= 0'),
 ];
 
 router.get('/', ctrl.list);
