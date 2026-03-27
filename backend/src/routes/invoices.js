@@ -1,6 +1,7 @@
 const { Router } = require('express');
 const { body } = require('express-validator');
 const validate = require('../middleware/validate');
+const asyncHandler = require('../middleware/asyncHandler');
 const ctrl = require('../controllers/invoiceController');
 
 const router = Router();
@@ -16,10 +17,10 @@ const invoiceRules = [
   body('items.*.unitPrice').isFloat({ min: 0 }).withMessage('each item unitPrice must be >= 0'),
 ];
 
-router.get('/', ctrl.list);
-router.get('/:id', ctrl.show);
-router.post('/', invoiceRules, validate, ctrl.create);
-router.put('/:id', invoiceRules, validate, ctrl.update);
-router.delete('/:id', ctrl.destroy);
+router.get('/', asyncHandler(ctrl.list));
+router.get('/:id', asyncHandler(ctrl.show));
+router.post('/', invoiceRules, validate, asyncHandler(ctrl.create));
+router.put('/:id', invoiceRules, validate, asyncHandler(ctrl.update));
+router.delete('/:id', asyncHandler(ctrl.destroy));
 
 module.exports = router;

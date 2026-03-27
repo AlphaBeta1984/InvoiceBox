@@ -10,29 +10,30 @@ function pick(obj, keys) {
   return result;
 }
 
-function list(req, res) {
-  res.json(Client.findAll());
+async function list(req, res) {
+  const clients = await Client.findAll();
+  res.json(clients);
 }
 
-function show(req, res) {
-  const client = Client.findById(req.params.id);
+async function show(req, res) {
+  const client = await Client.findById(req.params.id);
   if (!client) return res.status(404).json({ message: 'Client not found' });
   res.json(client);
 }
 
-function create(req, res) {
-  const client = Client.create(pick(req.body, ALLOWED_FIELDS));
+async function create(req, res) {
+  const client = await Client.create(pick(req.body, ALLOWED_FIELDS));
   res.status(201).json(client);
 }
 
-function update(req, res) {
-  const client = Client.update(req.params.id, pick(req.body, ALLOWED_FIELDS));
+async function update(req, res) {
+  const client = await Client.update(req.params.id, pick(req.body, ALLOWED_FIELDS));
   if (!client) return res.status(404).json({ message: 'Client not found' });
   res.json(client);
 }
 
-function destroy(req, res) {
-  const deleted = Client.remove(req.params.id);
+async function destroy(req, res) {
+  const deleted = await Client.remove(req.params.id);
   if (!deleted) return res.status(404).json({ message: 'Client not found' });
   res.status(204).end();
 }
